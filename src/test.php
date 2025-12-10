@@ -12,10 +12,24 @@ try {
     foreach ($questions as $i => $q) {
         echo "<p><strong>" . ($i+1) . ". " . $q['question_text'] . "</strong></p>";
         
-        // Шкала от 1 до 5
-        for ($j = 1; $j <= 5; $j++) {
-            echo $j . " <input type='radio' name='q" . $q['id'] . "' value='" . $j . "' required> ";
+        // Показываем варианты ответов если они есть
+        $options = [$q['option_a'], $q['option_b'], $q['option_c'], $q['option_d']];
+        $hasOptions = false;
+        
+        foreach ($options as $index => $option) {
+            if (!empty($option)) {
+                $hasOptions = true;
+                echo ($index+1) . " <input type='radio' name='q" . $q['id'] . "' value='" . ($index+1) . "' required> " . htmlspecialchars($option) . " ";
+            }
         }
+        
+        // Если нет вариантов, показываем шкалу 1-5
+        if (!$hasOptions) {
+            for ($j = 1; $j <= 5; $j++) {
+                echo $j . " <input type='radio' name='q" . $q['id'] . "' value='" . $j . "' required> ";
+            }
+        }
+        
         echo "<br><br>";
     }
     
