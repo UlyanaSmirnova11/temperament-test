@@ -34,9 +34,31 @@ try {
     }
     
     // Определяем доминирующий темперамент
-    $dominant = array_keys($scores, max($scores))[0];
+    $max_score = max($scores);
+    $dominant_types = array_keys($scores, $max_score);
     
-    // Сохраняем результат в БД
+    $russian_names = [
+        'choleric' => 'Холерик',
+        'sanguine' => 'Сангвиник', 
+        'phlegmatic' => 'Флегматик',
+        'melancholic' => 'Меланхолик'
+    ];
+    
+    if (count($dominant_types) > 1) {
+        // Несколько типов с одинаковым баллом
+        $dominant_names = [];
+        foreach ($dominant_types as $type) {
+            $dominant_names[] = $russian_names[$type];
+        }
+        $dominant_display = implode(' и ', $dominant_names);
+        $dominant_db = $dominant_types[0]; // Для БД берём первый
+    } else {
+        // Один доминирующий тип
+        $dominant_display = $russian_names[$dominant_types[0]];
+        $dominant_db = $dominant_types[0];
+    }
+    
+    // Сохраняем результат в БД (используем английское название)
     $stmt = $pdo->prepare("
         INSERT INTO test_results 
         (user_name, choleric_score, sanguine_score, phlegmatic_score, melancholic_score, dominant_temperament) 
@@ -48,7 +70,7 @@ try {
         $scores['sanguine'],
         $scores['phlegmatic'],
         $scores['melancholic'],
-        $dominant
+        $dominant_db
     ]);
     
     // Показываем результаты
@@ -62,7 +84,7 @@ try {
     echo "<li>Меланхолик: " . $scores['melancholic'] . " баллов</li>";
     echo "</ul>";
     
-    echo "<h3>Ваш доминирующий темперамент: " . ucfirst($dominant) . "</h3>";
+    echo "<h3>Ваш доминирующий темперамент: " . $dominant_display . "</h3>";
     
     // Описание темпераментов
     $descriptions = [
@@ -72,7 +94,7 @@ try {
         'melancholic' => 'Чувствительный, глубокий, перфекционист, склонный к самоанализу.'
     ];
     
-    echo "<p><strong>Описание:</strong> " . $descriptions[$dominant] . "</p>";
+    echo "<p><strong>Описание:</strong> " . $descriptions[$dominant_db] . "</p>";
     
     echo "<p><a href='previous.php'>Посмотреть историю тестов</a></p>";
     echo "<p><a href='test.php'>Пройти тест еще раз</a></p>";
