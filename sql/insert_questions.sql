@@ -1,5 +1,3 @@
--- Вставляем 12 вопросов (по 3 на каждый темперамент)
-
 -- ХОЛЕРИК
 INSERT INTO questions (question_text, temperament_type) VALUES
 ('В споре я обычно настаиваю на своём мнении', 'choleric'),
