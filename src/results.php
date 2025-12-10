@@ -7,7 +7,6 @@ try {
     // Получаем данные из формы
     $user_name = $_POST['name'] ?? 'Аноним';
     
-    // Инициализируем счетчики темпераментов
     $scores = [
         'choleric' => 0,
         'sanguine' => 0,
@@ -58,7 +57,7 @@ try {
         $dominant_db = $dominant_types[0];
     }
     
-    // Сохраняем результат в БД (используем английское название)
+    // Сохраняем результат в БД
     $stmt = $pdo->prepare("
         INSERT INTO test_results 
         (user_name, choleric_score, sanguine_score, phlegmatic_score, melancholic_score, dominant_temperament) 
@@ -73,7 +72,6 @@ try {
         $dominant_db
     ]);
     
-    // Показываем результаты
     echo "<h1>Результаты теста для " . htmlspecialchars($user_name) . "</h1>";
     
     echo "<h3>Баллы по темпераментам:</h3>";
@@ -86,7 +84,6 @@ try {
     
     echo "<h3>Ваш доминирующий темперамент: " . $dominant_display . "</h3>";
     
-    // Описание темпераментов
     $descriptions = [
         'choleric' => 'Энергичный, целеустремленный, эмоциональный, склонный к лидерству.',
         'sanguine' => 'Общительный, оптимистичный, активный, легко адаптирующийся.',
