@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS questions (
+-- Создание таблицы вопросов
+CREATE TABLE questions (
     id SERIAL PRIMARY KEY,
     question_text TEXT NOT NULL,
     option_a TEXT,
@@ -6,11 +7,12 @@ CREATE TABLE IF NOT EXISTS questions (
     option_c TEXT,
     option_d TEXT,
     correct_answer CHAR(1),
-    temperament_type VARCHAR(20),
+    temperament_type VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS test_results (
+-- Создание таблицы результатов теста
+CREATE TABLE test_results (
     id SERIAL PRIMARY KEY,
     user_name VARCHAR(100) NOT NULL,
     choleric_score INTEGER DEFAULT 0,
