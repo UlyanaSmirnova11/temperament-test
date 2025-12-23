@@ -4,10 +4,8 @@ FROM php:8.2-fpm-alpine
 RUN apk add --no-cache postgresql-dev \
     && docker-php-ext-install pdo pdo_pgsql
 
-# Создаем не-root пользователя для безопасности
-RUN adduser -D -u 1000 www-data
-
-# Переключаемся на не-root пользователя
+# Пользователь www-data уже существует в базовом образе
+# Просто переключаемся на него
 USER www-data
 
 # Рабочая директория
